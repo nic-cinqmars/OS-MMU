@@ -40,7 +40,7 @@ int TLB::getFrameFromPage(uint8_t page)
 {
 	if (elements.count(page) != 0)
 	{
-		//manageHistory(page); - Not sure ?
+		manageHistory(page);
 		return elements[page];
 	}
 	return -1;
