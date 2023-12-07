@@ -5,9 +5,10 @@
 #include <string>
 #include <iomanip>
 #include <sstream>
+#include <stdint.h>
 #include "TLB.h"
 
-const std::string BASE_PATH = "C:\\Users\\Nicolas\\source\\repos\\nic-cinqmars\\OS-MMU\\";
+const std::string BASE_PATH = ""; // Change to path of folder containing "addresses.txt" and "simuleDisque.bin"
 const int PAGE_SIZE = 256;
 
 // 256 frames of 256 bytes (chars)
@@ -33,7 +34,6 @@ int getValueAtAddress(int frame, uint8_t offset);
 
 int main()
 {
-	std::ofstream resultsFile(BASE_PATH + "results.txt", std::ios_base::trunc);
 	uint16_t pageMask = createMask(8, 15);
 	uint16_t offsetMask = createMask(0, 7);
 
@@ -64,6 +64,8 @@ int main()
 			}
 		}
 	}
+
+	std::ofstream resultsFile(BASE_PATH + "results.txt", std::ios_base::trunc);
 
 	// Loop through each address and get information from each
 	for (uint16_t address : logicalAddresses)
@@ -96,8 +98,8 @@ int main()
 	float tlbSuccesRate = (float)(tlbHit) / getFrameFromPageCalled * 100;
 	float pageFaultRate = (float)(pageFaults) / logicalAddresses.size() * 100;
 
-	std::cout << "\n\n" << "TLB Succes rate : " << tlbSuccesRate;
-	std::cout << "\n" << "Page fault rate : " << pageFaultRate;
+	std::cout << "\n\n" << "TLB Succes rate : " << tlbSuccesRate << "%";
+	std::cout << "\n" << "Page fault rate : " << pageFaultRate << "%";
 
 	return 0;
 }
@@ -165,6 +167,7 @@ int getFrameFromPage(uint8_t page)
 	if (pageTable[page][1] != 1)
 	{
 		// Should never happen at this point, because physical memory is the same size as virtual memory
+		// All needed pages are loaded at this point
 		std::cout << "Page fault on page [" << (int)page << "].\n";
 		// If it could happen, we would replace a page and load the page here :
 		return -1;

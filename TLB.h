@@ -1,6 +1,7 @@
 #pragma once
 #include <stack>
 #include <map>
+#include <stdint.h>
 
 class TLB
 {
@@ -10,6 +11,7 @@ private:
 	std::map<uint8_t, int> elements;
 
 	void manageHistory(uint8_t page);
+	void removeLastElement();
 
 public:
 	TLB(int tlbSize) : TLB_MAX_ELEMENTS(tlbSize) {};
